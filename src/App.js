@@ -8,17 +8,17 @@ const title = "Sorting Articles";
 
 function App({articles}) {
 
-    const [processedArticle, setProcessedArticle] = useState(articles)
+    const [processedArticle, setValue] = useState(articles)
 
     useEffect(()=>{
-        sortBy();
+        sortBy('upvotes');
     },[]);
 
-    const sortBy = (type = 'mostRecent') => {
-        console.log('fired')
+    const sortBy = (type) => {
+        let newValue;
         switch(type){
-            case 'upvote':
-                articles.sort((a,b)=>{
+            case 'upvotes':
+                newValue = processedArticle.sort((a,b)=>{
                     if(a.upvotes < b.upvotes){
                         return +1
                     }
@@ -31,16 +31,16 @@ function App({articles}) {
                 })        
                 break;
             case 'mostRecent':
-                articles.sort((a,b)=>{
-                    return a.date - b.date
-                })        
+                newValue = processedArticle.sort((a,b)=>{
+                    return new Date(b.date) - new Date(a.date);
+                })                
                 break;
             default:
                 // default as upvotes already    
                 break;
         }
-        console.log(articles);
-        setProcessedArticle(articles)
+        console.log(newValue);
+        setValue([...newValue]);
     }
 
     return (
